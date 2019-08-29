@@ -5,6 +5,7 @@ import {Grid} from './components/grid/grid.component'
 class App extends Component {
   constructor(){
     super()
+    this.renderCount= 1;                
     this.state = {
       i2: 0,
       i1: 1,
@@ -30,21 +31,32 @@ class App extends Component {
         {id: 10, value:'Oct'},
         {id: 11, value:'Nov'},
         {id: 12, value:'Dec'}],
-      selection: 'Selection placeholder, replace with value of clicked blue box...'                
+      selection: []
     } 
   }
 
-  updateSelection = selection => {
-    this.setState({ selection });
+  updateSelection = newSelection => {
+    let prevSelection = this.state.selection;
+    
+    if(prevSelection.includes(newSelection)===true){
+      prevSelection = prevSelection.filter(n => n!==newSelection);
+    }else{
+      prevSelection.push(newSelection);
+    }
+    this.setState({ selection: prevSelection });
   }
 
-  doButton = async () => {
-    await this.setState({i2: this.state.i1});
-    await this.setState({i1: this.state.result});
-    await this.setState({result: this.state.i1 + this.state.i2});
+  doButton = () => {
+    const tempi2 = this.state.i1;
+    const tempi1 = this.state.result;
+    const tempresult = tempi1 + tempi2;
+    
+    this.setState({i1: tempi1,i2: tempi2,result: tempresult});
   }
   
   render() {
+    console.log(`Render Count: ${this.renderCount}`);
+    this.renderCount++;
     const {i2, i1, result} = this.state;
     
     return (

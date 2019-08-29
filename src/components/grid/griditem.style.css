@@ -15,3 +15,7 @@
     transform: scale(1.03);
     background-color: #ff7b00e7;
 }
+
+.griditem:visited{
+    background-color: #0004ffe7;
+}
