@@ -34,6 +34,10 @@ class App extends Component {
     } 
   }
 
+  updateSelection = selection => {
+    this.setState({ selection });
+  }
+
   doButton = async () => {
     await this.setState({i2: this.state.i1});
     await this.setState({i1: this.state.result});
@@ -50,9 +54,9 @@ class App extends Component {
         <button onKeyDown={this.doButton} onMouseUp={this.doButton}>Do the thing</button>
         <p></p>
 
-        <Grid>{this.state.arr1}</Grid>
-        <Grid>{this.state.arr2}</Grid>
-        <Grid>{this.state.months}</Grid>
+        <Grid updateSelection={this.updateSelection}>{this.state.arr1}</Grid>
+        <Grid updateSelection={this.updateSelection}>{this.state.arr2}</Grid>
+        <Grid updateSelection={this.updateSelection}>{this.state.months}</Grid>
         <h2>{this.state.selection}</h2>
     </div>
     )
