@@ -1,0 +1,17 @@
+.griditem {
+    display: flex;
+    flex-direction: column;
+    background-color: #95dada77;
+    border: 0px solid grey;
+    border-radius: 5px;
+    padding: 25px;
+    -moz-osx-font-smoothing: greyscale; 
+    cursor: pointer; 
+    transform: translateZ(0);
+    transition: transform 0.1s ease-out; 
+}
+
+.griditem:hover{
+    transform: scale(1.03);
+    background-color: #ff7b00e7;
+}
