@@ -13,8 +13,10 @@ export const Grid = (props) => {
   return (
     <div className='grid'> 
       {props.children.map(item => (
-        <GridItem updateSelection={updateSelection} key={item.id}>{item}</GridItem>
-        //<h2 key={item.id}>{item.value}</h2>  
+        <GridItem updateSelection={updateSelection} key={item.id}
+        disp1={props.disp1} disp2={props.disp2} disp3={props.disp3} disp4={props.disp4}
+        >{item}</GridItem>
+        
       ))}
     </div>
   );
