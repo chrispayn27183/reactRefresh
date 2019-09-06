@@ -29,8 +29,8 @@ export class GridItem extends Component {
         return (
             <div className='griditem' style={{backgroundColor: this.state.bgColor}} >
                     <h4 key={this.props.id}>{this.props.children.day}</h4>
-                    <h3 key={this.props.id}  onClick={((event) => this.handleClick(event,this.props.children.id, this.props.updateSelection))}>{new Date(this.props.children.date).getDate()} / {new Date(this.props.children.date).getMonth()}</h3>  
-                    <h4 key={this.props.id}>{this.props.children.user_name} </h4>
+                    <h3 key={this.props.id}  onClick={((event) => this.handleClick(event,this.props.children.id, this.props.updateSelection))}>{new Date(this.props.children.date).getDate()} / {new Date(this.props.children.date).getMonth()+1}</h3>  
+                    <h4 key={this.props.id}>{this.props.children.user_name} </h4> 
             </div>
         )
     }

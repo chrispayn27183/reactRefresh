@@ -17,20 +17,22 @@ class App extends Component {
         {id: 1, value: '<'},
         {id: 3, value: '>'}],
       calendarArr: [],
-      activeMonth: 1
+      activeMonth: '',
+      activeYear: '',
     } 
   }
 
   async componentDidMount () {
     let temp = new Date();
     let monthNo = temp.getMonth()+1;
-    await this.setState({activeMonth: monthNo})
-    
+    let yearNo = temp.getFullYear(); 
+    await this.setState({activeMonth: monthNo, activeYear: yearNo})
+
     fetch('http://localhost:3030/rota',{method: 'POST',headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({"monthNo": this.state.activeMonth, "teamId":1 })
+      body: JSON.stringify({"monthNo": this.state.activeMonth, "teamId":1, "yearNo": this.state.activeYear})
     })
     .then(response => response.json())
     .then(days => this.setState({calendarArr: days})); 
@@ -55,17 +57,27 @@ class App extends Component {
     this.setState({i1: tempi1,i2: tempi2,result: tempresult});
   }
   
-  refreshCalendar = async (newMonth) => {    
-    await this.setState({"activeMonth": newMonth})
-
+  refreshCalendar = async (newMonth, newYear) => {    
+    await this.setState({"activeMonth": newMonth, "activeYear": newYear})
     fetch('http://localhost:3030/rota',{method: 'POST',headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({"monthNo": this.state.activeMonth, "teamId":1 })
+      body: JSON.stringify({"monthNo": this.state.activeMonth, "teamId":1 , "yearNo": this.state.activeYear})
     })
     .then(response => response.json())
     .then(days => this.setState({calendarArr: days})); 
+  }
+
+  updateRota = async () => {
+    fetch('http://localhost:3030/updaterota',{method: 'POST',headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"selection": this.state.selection, "userId":1})
+    })
+    this.setState({selection: ''});
+    this.refreshCalendar(this.state.activeMonth, this.state.activeYear);
   }
 
   render() {
@@ -75,17 +87,15 @@ class App extends Component {
     
     return (
       <div className="App">
-        {/* <p>{i2} + {i1} = {result}</p>
-        <button onKeyDown={this.doButton} onMouseUp={this.doButton}>Do the thing</button>
-        <p></p> */}
 
-        <MonthSelector refreshCalendar={this.refreshCalendar} activeMonth={this.state.activeMonth}></MonthSelector>
+        <MonthSelector refreshCalendar={this.refreshCalendar} activeMonth={this.state.activeMonth} activeYear={this.state.activeYear}></MonthSelector>
+        <button onClick={this.updateRota}> Update rota with selection </button>
 
         <p></p>
 
         <Grid updateSelection={this.updateSelection} disp1='date' disp2='day' disp3='user_name' disp4='id'>{this.state.calendarArr}</Grid>
 
-        <h2>{this.state.selection}</h2>
+
     </div>
     )
   }

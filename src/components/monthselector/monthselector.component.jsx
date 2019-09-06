@@ -1,5 +1,5 @@
 import React, {Component} from 'react'; 
-
+import './monthselector.style.css'; 
 //incoming props this.activeMonth
 //incoming function refreshCalendar
 
@@ -9,6 +9,7 @@ export class MonthSelector extends Component {
     super()
     this.state ={
       activeMonth: '',
+      activeYear: '',
       months: [{id: 1, value:'Jan'},
         {id: 2, value:'Feb'},
         {id: 3, value:'Mar'},
@@ -25,35 +26,50 @@ export class MonthSelector extends Component {
   }
     
   async componentDidMount(){
-    
     let temp = new Date();
     let monthNo = temp.getMonth()+1;
-    
-    await this.setState({activeMonth: monthNo})
+    let yearNo = temp.getFullYear();
+    await this.setState({activeMonth: monthNo});
+    await this.setState({activeYear: yearNo});
     this.showSelectedMonth(this.props.activeMonth, this.state.months)
   }
 
-
   incMonth = async () => {
-      const currentMonth = this.props.activeMonth;
+    const currentMonth = this.props.activeMonth;
+    const currentYear = this.props.activeYear; 
+    if(currentMonth%12===0){
+      const newMonth = 1;
+      const newYear = currentYear +1;
+      console.log(newYear);  
+      await this.setState({activeMonth: newMonth, activeYear: newYear}); 
+    }else{  
       const newMonth = currentMonth + 1;
-      await this.setState({activeMonth: newMonth});
-      this.getNewCalendar(this.props.refreshCalendar);
-
-      this.showSelectedMonth(this.props.activeMonth, this.state.months)
+      await this.setState({activeMonth: newMonth}); 
+    }
+    this.getNewCalendar(this.props.refreshCalendar);
+    this.showSelectedMonth(this.props.activeMonth, this.state.months)
   }
     
   decMonth = async () => {
-      const currentMonth = this.props.activeMonth;
-      const newMonth = currentMonth - 1;
-      await this.setState({activeMonth: newMonth});
-      this.getNewCalendar(this.props.refreshCalendar);
+    const currentMonth = this.props.activeMonth;
+    const currentYear = this.props.activeYear; 
 
-      this.showSelectedMonth(this.props.activeMonth, this.state.months)
+    if(currentMonth===1){
+      const newMonth = 12;
+      const newYear = currentYear -1;
+      console.log(newYear);  
+      await this.setState({activeMonth: newMonth, activeYear: newYear}); 
+    }else{  
+      const newMonth = currentMonth - 1;
+      await this.setState({activeMonth: newMonth}); 
+    }
+
+    this.getNewCalendar(this.props.refreshCalendar);
+    this.showSelectedMonth(this.props.activeMonth, this.state.months)
   }
   
   getNewCalendar = (refreshCalendar) => {
-    refreshCalendar(this.state.activeMonth);
+    refreshCalendar(this.state.activeMonth, this.state.activeYear);
   }
 
   showSelectedMonth = (selectMonth, monthsSet) => {
@@ -65,10 +81,10 @@ export class MonthSelector extends Component {
 
   render() {
     return (
-      <div > 
-      <button onMouseUp={this.incMonth}>+</button>
-      <p>{this.state.activeMonth}</p>
-      <button onMouseUp={this.decMonth}>-</button> 
+      <div className="selectorBlock" > 
+        <button className="selector" onMouseUp={this.incMonth}>+</button>
+        <p>{this.state.activeMonth} {this.state.activeYear} </p>
+        <button className="selector" onMouseUp={this.decMonth}>-</button> 
       </div>
     );
   }

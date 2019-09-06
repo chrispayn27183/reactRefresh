@@ -1,0 +1,21 @@
+.selector {
+    /* display: flex; */
+    background-color: #95dada77;
+    border: 0px solid grey;
+    border-radius: 3px;
+    /*padding: 25px;*/
+    -moz-osx-font-smoothing: greyscale; 
+    cursor: pointer; 
+    transform: translateZ(0);
+    transition: transform 0.1s ease-out; 
+}
+
+.selector:hover{
+    transform: scale(1.2);
+    background-color: #ff7b00e7;
+}
+
+.selectorBlock {
+    float: left;
+    padding: 25px;
+}
